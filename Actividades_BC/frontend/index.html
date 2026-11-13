@@ -1,173 +1,1587 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gestión de actividades</title>
+
 <style>
-:root{--navy:#17243b;--blue:#4268dc;--bg:#f4f6fb;--muted:#7d899b;--line:#e8ecf2;--green:#20966a}
-*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:#243149}
-.layout{min-height:100vh;display:flex}.sidebar{width:235px;background:var(--navy);color:#fff;padding:25px 17px;display:flex;flex-direction:column}
-.brand{font-size:17px;font-weight:bold;padding:7px 9px 35px;line-height:1.4}.brand span{display:block;color:#aab7cc;font-size:11px;font-weight:normal}
-.nav-title{font-size:10px;color:#8796ad;letter-spacing:1px;padding:0 10px 12px}.nav button{display:flex;align-items:center;gap:10px;width:100%;border:0;background:none;color:#c5cede;padding:13px 12px;border-radius:8px;text-align:left;cursor:pointer;margin-bottom:5px;font-size:13px}.nav button.active,.nav button:hover{background:#2a3b59;color:#fff}.side-foot{margin-top:auto;color:#9ba9bf;font-size:11px;padding:12px}
-main{flex:1;padding:0 35px 40px;min-width:0}.top{height:100px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;margin-bottom:27px}
-.top small{color:var(--muted);font-size:10px;letter-spacing:1px}.top h1{font-size:23px;margin:6px 0}.user{font-size:12px;background:#e7edff;color:#4261bd;border-radius:30px;padding:10px 14px;font-weight:bold}
-.welcome{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.welcome h2{font-size:18px;margin:0 0 6px}.welcome p,.sub{font-size:12px;color:var(--muted);margin:0}
-.btn{border:0;border-radius:8px;padding:11px 15px;background:var(--blue);color:white;font-weight:bold;font-size:12px;cursor:pointer}.btn:hover{filter:brightness(.94)}.btn.gray{background:#edf0f5;color:#526078}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}.stat,.panel{background:#fff;border:1px solid var(--line);border-radius:11px}.stat{padding:17px}.stat span{font-size:11px;color:var(--muted)}.stat strong{display:block;font-size:26px;margin-top:12px}
-.panel{padding:20px}.panel-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}.panel-head h3{font-size:15px;margin:0 0 5px}.tools{display:flex;gap:9px;margin-bottom:15px}.tools input,.tools select{border:1px solid var(--line);border-radius:7px;padding:10px;font-size:12px;background:#fff}.tools input{flex:1;max-width:350px}
-.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;white-space:nowrap}th{text-align:left;color:#8995a7;font-size:10px;text-transform:uppercase;letter-spacing:.5px;padding:12px 9px;border-bottom:1px solid var(--line)}td{padding:13px 9px;border-bottom:1px solid #eff1f5;font-size:11px;color:#59667a}td b{display:block;color:#26344a;font-size:12px}td small{display:block;color:#9aa4b2;margin-top:4px;max-width:230px;overflow:hidden;text-overflow:ellipsis}
-.pill{padding:5px 8px;border-radius:20px;font-size:10px;font-weight:bold}.pending{background:#eff1f4;color:#788496}.progress{background:#eaf1ff;color:#4773d5}.done{background:#e5f7ef;color:#20966a}.high{color:#c27d28;background:#fff3e2}.urgent{color:#ce4e5a;background:#ffebed}.low{color:#6d7a8d;background:#eff1f4}
-.actions{display:flex;gap:5px}.actions button{border:1px solid var(--line);background:#fff;border-radius:6px;padding:6px 8px;cursor:pointer;color:#526078;font-size:11px}.actions .finish{color:var(--green)}.actions .delete{color:#cf5964}
-.empty{text-align:center;padding:30px;color:#929daf;font-size:12px}.hidden{display:none!important}
-.modal-bg{position:fixed;inset:0;background:#111d3280;display:grid;place-items:center;padding:18px;z-index:3}.modal{background:white;width:min(520px,100%);padding:23px;border-radius:13px;max-height:90vh;overflow:auto}.modal h2{font-size:18px;margin:0 0 5px}.modal .sub{margin-bottom:18px}.modal label{display:block;font-size:11px;font-weight:bold;color:#59667a;margin:12px 0}.modal input,.modal textarea,.modal select{display:block;width:100%;margin-top:6px;padding:10px;border:1px solid var(--line);border-radius:7px;font:12px Arial}.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.modal-foot{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}.notice{font-size:11px;color:#65738a;margin-top:12px}
-@media(max-width:850px){.sidebar{width:190px}.stats{grid-template-columns:repeat(2,1fr)}main{padding:0 18px 30px}}
-@media(max-width:600px){.layout{display:block}.sidebar{width:100%;padding:12px}.brand{padding:4px 7px 12px}.nav-title,.side-foot{display:none}.nav{display:flex;gap:5px}.nav button{width:auto;flex:1;justify-content:center;padding:10px 5px;font-size:11px}.top{height:80px;margin-bottom:20px}.top h1{font-size:18px}.welcome{align-items:flex-start;gap:10px}.welcome .btn{padding:10px;font-size:10px}.stats{gap:8px}.stat{padding:13px}.stat strong{font-size:22px}.panel{padding:13px}.two{grid-template-columns:1fr}}
+:root{
+  --navy:#17243b;
+  --blue:#4268dc;
+  --bg:#f4f6fb;
+  --muted:#7d899b;
+  --line:#e8ecf2;
+  --green:#20966a;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:var(--bg);
+  color:#243149;
+}
+
+.layout{min-height:100vh;display:flex}
+
+.sidebar{
+  width:235px;
+  background:var(--navy);
+  color:#fff;
+  padding:25px 17px;
+  display:flex;
+  flex-direction:column;
+}
+
+.brand{
+  font-size:17px;
+  font-weight:bold;
+  padding:7px 9px 35px;
+  line-height:1.4;
+}
+
+.brand span{
+  display:block;
+  color:#aab7cc;
+  font-size:11px;
+  font-weight:normal;
+}
+
+.nav-title{
+  font-size:10px;
+  color:#8796ad;
+  letter-spacing:1px;
+  padding:0 10px 12px;
+}
+
+.nav button{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  width:100%;
+  border:0;
+  background:none;
+  color:#c5cede;
+  padding:13px 12px;
+  border-radius:8px;
+  text-align:left;
+  cursor:pointer;
+  margin-bottom:5px;
+  font-size:13px;
+}
+
+.nav button.active,
+.nav button:hover{
+  background:#2a3b59;
+  color:#fff;
+}
+
+.side-foot{
+  margin-top:auto;
+  color:#9ba9bf;
+  font-size:11px;
+  padding:12px;
+}
+
+main{
+  flex:1;
+  padding:0 35px 40px;
+  min-width:0;
+}
+
+.top{
+  height:100px;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:27px;
+}
+
+.top small{
+  color:var(--muted);
+  font-size:10px;
+  letter-spacing:1px;
+}
+
+.top h1{
+  font-size:23px;
+  margin:6px 0;
+}
+
+.user{
+  font-size:12px;
+  background:#e7edff;
+  color:#4261bd;
+  border-radius:30px;
+  padding:10px 14px;
+  font-weight:bold;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.user button{
+  border:0;
+  background:#ffebed;
+  color:#cf5964;
+  padding:9px 12px;
+  border-radius:7px;
+  cursor:pointer;
+  font-size:11px;
+}
+
+.welcome{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+.welcome h2{
+  font-size:18px;
+  margin:0 0 6px;
+}
+
+.welcome p,.sub{
+  font-size:12px;
+  color:var(--muted);
+  margin:0;
+}
+
+.btn{
+  border:0;
+  border-radius:8px;
+  padding:11px 15px;
+  background:var(--blue);
+  color:white;
+  font-weight:bold;
+  font-size:12px;
+  cursor:pointer;
+}
+
+.btn:hover{filter:brightness(.94)}
+
+.btn.gray{
+  background:#edf0f5;
+  color:#526078;
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:14px;
+  margin-bottom:22px;
+}
+
+.stat,.panel{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:11px;
+}
+
+.stat{padding:17px}
+
+.stat span{
+  font-size:11px;
+  color:var(--muted);
+}
+
+.stat strong{
+  display:block;
+  font-size:26px;
+  margin-top:12px;
+}
+
+.panel{padding:20px}
+
+.panel-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:16px;
+}
+
+.panel-head h3{
+  font-size:15px;
+  margin:0 0 5px;
+}
+
+.tools{
+  display:flex;
+  gap:9px;
+  margin-bottom:15px;
+}
+
+.tools input,.tools select{
+  border:1px solid var(--line);
+  border-radius:7px;
+  padding:10px;
+  font-size:12px;
+  background:#fff;
+}
+
+.tools input{
+  flex:1;
+  max-width:350px;
+}
+
+.table-wrap{overflow-x:auto}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  white-space:nowrap;
+}
+
+th{
+  text-align:left;
+  color:#8995a7;
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+  padding:12px 9px;
+  border-bottom:1px solid var(--line);
+}
+
+td{
+  padding:13px 9px;
+  border-bottom:1px solid #eff1f5;
+  font-size:11px;
+  color:#59667a;
+}
+
+td b{
+  display:block;
+  color:#26344a;
+  font-size:12px;
+}
+
+td small{
+  display:block;
+  color:#9aa4b2;
+  margin-top:4px;
+  max-width:230px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.pill{
+  padding:5px 8px;
+  border-radius:20px;
+  font-size:10px;
+  font-weight:bold;
+}
+
+.pending{background:#eff1f4;color:#788496}
+.progress{background:#eaf1ff;color:#4773d5}
+.done{background:#e5f7ef;color:#20966a}
+.high{color:#c27d28;background:#fff3e2}
+.urgent{color:#ce4e5a;background:#ffebed}
+.low{color:#6d7a8d;background:#eff1f4}
+
+.actions{
+  display:flex;
+  gap:5px;
+}
+
+.actions button{
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:6px;
+  padding:6px 8px;
+  cursor:pointer;
+  color:#526078;
+  font-size:11px;
+}
+
+.actions .finish{color:var(--green)}
+.actions .delete{color:#cf5964}
+
+.empty{
+  text-align:center;
+  padding:30px;
+  color:#929daf;
+  font-size:12px;
+}
+
+.hidden{display:none!important}
+
+.modal-bg{
+  position:fixed;
+  inset:0;
+  background:#111d3280;
+  display:grid;
+  place-items:center;
+  padding:18px;
+  z-index:3;
+}
+
+.modal{
+  background:white;
+  width:min(520px,100%);
+  padding:23px;
+  border-radius:13px;
+  max-height:90vh;
+  overflow:auto;
+}
+
+.modal h2{
+  font-size:18px;
+  margin:0 0 5px;
+}
+
+.modal .sub{margin-bottom:18px}
+
+.modal label{
+  display:block;
+  font-size:11px;
+  font-weight:bold;
+  color:#59667a;
+  margin:12px 0;
+}
+
+.modal input,.modal textarea,.modal select{
+  display:block;
+  width:100%;
+  margin-top:6px;
+  padding:10px;
+  border:1px solid var(--line);
+  border-radius:7px;
+  font:12px Arial;
+}
+
+.two{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.modal-foot{
+  display:flex;
+  justify-content:flex-end;
+  gap:8px;
+  margin-top:18px;
+}
+
+.notice{
+  font-size:11px;
+  color:#65738a;
+  margin-top:12px;
+}
+
+/* PANTALLA DE INICIO DE SESIÓN */
+
+.login-screen{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+  background:#17243b;
+}
+
+.login-card{
+  background:white;
+  width:100%;
+  max-width:400px;
+  padding:35px;
+  border-radius:15px;
+  text-align:center;
+  box-shadow:0 15px 45px #0003;
+}
+
+.login-card h2{
+  color:#17243b;
+  margin-bottom:8px;
+}
+
+.login-card p{
+  color:#7d899b;
+  font-size:13px;
+  margin-bottom:25px;
+}
+
+.login-card input{
+  width:100%;
+  padding:13px;
+  border:1px solid #e8ecf2;
+  border-radius:8px;
+  margin-bottom:13px;
+  font-size:14px;
+}
+
+.login-card button{
+  width:100%;
+  padding:13px;
+}
+
+.login-error{
+  color:#cf5964;
+  font-size:12px;
+  margin-top:12px;
+}
+
+@media(max-width:850px){
+  .sidebar{width:190px}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  main{padding:0 18px 30px}
+}
+
+@media(max-width:600px){
+  .layout{display:block}
+  .sidebar{width:100%;padding:12px}
+  .brand{padding:4px 7px 12px}
+  .nav-title,.side-foot{display:none}
+  .nav{display:flex;gap:5px}
+  .nav button{
+    width:auto;
+    flex:1;
+    justify-content:center;
+    padding:10px 5px;
+    font-size:11px;
+  }
+  .top{
+    height:80px;
+    margin-bottom:20px;
+  }
+  .top h1{font-size:18px}
+  .user{font-size:10px;gap:5px;padding:8px}
+  .user button{font-size:10px;padding:7px}
+  .welcome{align-items:flex-start;gap:10px}
+  .welcome .btn{padding:10px;font-size:10px}
+  .stats{gap:8px}
+  .stat{padding:13px}
+  .stat strong{font-size:22px}
+  .panel{padding:13px}
+  .two{grid-template-columns:1fr}
+}
 </style>
 </head>
+
 <body>
-<div class="layout">
+
+<!-- ======================================
+     PANTALLA DE ACCESO
+====================================== -->
+
+<div id="loginScreen" class="login-screen">
+  <form class="login-card" id="loginForm">
+
+    <h2>Gestión Empresarial</h2>
+
+    <p>Ingresa tus datos para acceder al sistema.</p>
+
+    <input
+      type="text"
+      id="loginName"
+      placeholder="Tu nombre completo"
+      maxlength="60"
+      required
+      autocomplete="name"
+    >
+
+    <input
+      type="password"
+      id="globalPassword"
+      placeholder="Contraseña global"
+      required
+      autocomplete="current-password"
+    >
+
+    <button type="submit" class="btn">
+      Iniciar sesión
+    </button>
+
+    <div id="loginError" class="login-error"></div>
+
+  </form>
+</div>
+
+<!-- ======================================
+     APLICACIÓN PRINCIPAL
+====================================== -->
+
+<div class="layout hidden" id="appLayout">
+
   <aside class="sidebar">
-    <div class="brand">◆ Gestión Empresarial<span>Control de actividades</span></div>
+
+    <div class="brand">
+      ◆ Gestión Empresarial
+      <span>Control de actividades</span>
+    </div>
+
     <div class="nav-title">MENÚ PRINCIPAL</div>
+
     <nav class="nav">
       <button class="active" data-page="dashboard">▦ Resumen</button>
       <button data-page="tasks">☷ Actividades</button>
       <button data-page="history">◷ Historial</button>
     </nav>
-    <div class="side-foot">● Sistema local · Datos guardados en este navegador</div>
+
+    <div class="side-foot">
+      ● Sistema compartido · Datos guardados en la nube
+    </div>
+
   </aside>
+
   <main>
-    <header class="top"><div><small>EMPRESA / OPERACIONES</small><h1 id="pageTitle">Resumen general</h1></div><div class="user">Administrador</div></header>
+
+    <header class="top">
+
+      <div>
+        <small>EMPRESA / OPERACIONES</small>
+        <h1 id="pageTitle">Resumen general</h1>
+      </div>
+
+      <div class="user">
+        <span id="currentUser">Usuario</span>
+        <button onclick="logout()">Cerrar sesión</button>
+      </div>
+
+    </header>
+
+    <!-- RESUMEN -->
 
     <section id="dashboard">
-      <div class="welcome"><div><h2>¡Bienvenido!</h2><p>Consulta el estado de las actividades de tu empresa.</p></div><button class="btn" onclick="openForm()">＋ Nueva actividad</button></div>
-      <div class="stats">
-        <div class="stat"><span>Total de actividades</span><strong id="total">0</strong></div>
-        <div class="stat"><span>Pendientes</span><strong id="pendingCount">0</strong></div>
-        <div class="stat"><span>En progreso</span><strong id="progressCount">0</strong></div>
-        <div class="stat"><span>Completadas</span><strong id="doneCount">0</strong></div>
+
+      <div class="welcome">
+
+        <div>
+          <h2>¡Bienvenido!</h2>
+          <p>Consulta el estado de las actividades de tu empresa.</p>
+        </div>
+
+        <button class="btn" onclick="openForm()">
+          ＋ Nueva actividad
+        </button>
+
       </div>
-      <div class="panel"><div class="panel-head"><div><h3>Actividades recientes</h3><p class="sub">Últimas tareas registradas</p></div><button class="btn gray" onclick="showPage('tasks')">Ver todas</button></div><div id="recentTable"></div></div>
+
+      <div class="stats">
+
+        <div class="stat">
+          <span>Total de actividades</span>
+          <strong id="total">0</strong>
+        </div>
+
+        <div class="stat">
+          <span>Pendientes</span>
+          <strong id="pendingCount">0</strong>
+        </div>
+
+        <div class="stat">
+          <span>En progreso</span>
+          <strong id="progressCount">0</strong>
+        </div>
+
+        <div class="stat">
+          <span>Completadas</span>
+          <strong id="doneCount">0</strong>
+        </div>
+
+      </div>
+
+      <div class="panel">
+
+        <div class="panel-head">
+
+          <div>
+            <h3>Actividades recientes</h3>
+            <p class="sub">Últimas tareas registradas</p>
+          </div>
+
+          <button class="btn gray" onclick="showPage('tasks')">
+            Ver todas
+          </button>
+
+        </div>
+
+        <div id="recentTable"></div>
+
+      </div>
+
     </section>
+
+    <!-- ACTIVIDADES -->
 
     <section id="tasks" class="hidden">
+
       <div class="panel">
-        <div class="panel-head"><div><h3>Listado de actividades</h3><p class="sub">Agrega, organiza y actualiza las tareas.</p></div><button class="btn" onclick="openForm()">＋ Agregar actividad</button></div>
-        <div class="tools"><input id="search" placeholder="Buscar actividad..." oninput="render()"><select id="filter" onchange="render()"><option value="">Todos los estados</option><option>Pendiente</option><option>En progreso</option><option>Completada</option></select></div>
+
+        <div class="panel-head">
+
+          <div>
+            <h3>Listado de actividades</h3>
+            <p class="sub">Agrega, organiza y actualiza las tareas.</p>
+          </div>
+
+          <button class="btn" onclick="openForm()">
+            ＋ Agregar actividad
+          </button>
+
+        </div>
+
+        <div class="tools">
+
+          <input
+            id="search"
+            placeholder="Buscar actividad..."
+            oninput="render()"
+          >
+
+          <select id="filter" onchange="render()">
+            <option value="">Todos los estados</option>
+            <option>Pendiente</option>
+            <option>En progreso</option>
+            <option>Completada</option>
+          </select>
+
+        </div>
+
         <div id="taskTable"></div>
+
       </div>
+
     </section>
+
+    <!-- HISTORIAL -->
 
     <section id="history" class="hidden">
-      <div class="panel"><div class="panel-head"><div><h3>Historial de actividades</h3><p class="sub">Registro de las acciones realizadas.</p></div></div><div id="historyTable"></div></div>
+
+      <div class="panel">
+
+        <div class="panel-head">
+
+          <div>
+            <h3>Historial de actividades</h3>
+            <p class="sub">Registro de las acciones realizadas por cada usuario.</p>
+          </div>
+
+        </div>
+
+        <div id="historyTable"></div>
+
+      </div>
+
     </section>
+
   </main>
+
 </div>
 
+<!-- ======================================
+     FORMULARIO DE ACTIVIDADES
+====================================== -->
+
 <div class="modal-bg hidden" id="modalBg">
+
   <form class="modal" id="taskForm">
-    <h2 id="formTitle">Nueva actividad</h2><p class="sub">Completa los datos de la tarea.</p>
+
+    <h2 id="formTitle">Nueva actividad</h2>
+
+    <p class="sub">Completa los datos de la tarea.</p>
+
     <input type="hidden" id="taskId">
-    <label>Nombre de la actividad *<input id="title" required maxlength="150" placeholder="Ej. Preparar informe mensual"></label>
-    <label>Descripción<textarea id="description" rows="3" placeholder="Detalles de la actividad..."></textarea></label>
+
+    <label>
+      Nombre de la actividad *
+      <input
+        id="title"
+        required
+        maxlength="150"
+        placeholder="Ej. Preparar informe mensual"
+      >
+    </label>
+
+    <label>
+      Descripción
+      <textarea
+        id="description"
+        rows="3"
+        placeholder="Detalles de la actividad..."
+      ></textarea>
+    </label>
+
     <div class="two">
-      <label>Responsable<input id="owner" placeholder="Nombre del empleado"></label>
-      <label>Fecha límite<input id="dueDate" type="date"></label>
-      <label>Prioridad<select id="priority"><option>Baja</option><option selected>Media</option><option>Alta</option><option>Urgente</option></select></label>
-      <label>Estado<select id="status"><option>Pendiente</option><option>En progreso</option><option>Completada</option></select></label>
+
+      <label>
+        Responsable
+        <input id="owner" placeholder="Nombre del empleado">
+      </label>
+
+      <label>
+        Fecha límite
+        <input id="dueDate" type="date">
+      </label>
+
+      <label>
+        Prioridad
+        <select id="priority">
+          <option>Baja</option>
+          <option selected>Media</option>
+          <option>Alta</option>
+          <option>Urgente</option>
+        </select>
+      </label>
+
+      <label>
+        Estado
+        <select id="status">
+          <option>Pendiente</option>
+          <option>En progreso</option>
+          <option>Completada</option>
+        </select>
+      </label>
+
     </div>
-    <div class="modal-foot"><button type="button" class="btn gray" onclick="closeForm()">Cancelar</button><button class="btn" type="submit">Guardar actividad</button></div>
+
+    <div class="modal-foot">
+
+      <button
+        type="button"
+        class="btn gray"
+        onclick="closeForm()"
+      >
+        Cancelar
+      </button>
+
+      <button class="btn" type="submit">
+        Guardar actividad
+      </button>
+
+    </div>
+
   </form>
+
 </div>
 
 <script>
+
+// ==========================================
+// CONFIGURACIÓN GENERAL
+// ==========================================
+
 const API = 'https://bctareascontables.onrender.com/api';
+
 let tasks = [];
 let historyItems = [];
+
 const $ = id => document.getElementById(id);
 
-async function api(path, options={}) {
-  const response = await fetch(API + path, {
-    ...options,
-    headers: { 'Content-Type': 'application/json', ...(options.headers || {}) }
+let token = sessionStorage.getItem('accessToken');
+let currentUser = sessionStorage.getItem('currentUser');
+
+
+// ==========================================
+// SESIÓN Y AUTENTICACIÓN
+// ==========================================
+
+function showApp() {
+
+  $('loginScreen').classList.add('hidden');
+
+  $('appLayout').classList.remove('hidden');
+
+  $('currentUser').textContent = currentUser || 'Usuario';
+
+}
+
+function showLogin() {
+
+  token = null;
+  currentUser = null;
+
+  sessionStorage.removeItem('accessToken');
+  sessionStorage.removeItem('currentUser');
+
+  tasks = [];
+  historyItems = [];
+
+  $('appLayout').classList.add('hidden');
+
+  $('loginScreen').classList.remove('hidden');
+
+  $('loginName').value = '';
+  $('globalPassword').value = '';
+
+  $('loginError').textContent = '';
+
+}
+
+
+// ==========================================
+// INICIAR SESIÓN
+// ==========================================
+
+async function login(name, password) {
+
+  const response = await fetch(API + '/login', {
+
+    method: 'POST',
+
+    headers: {
+      'Content-Type': 'application/json'
+    },
+
+    body: JSON.stringify({
+      name,
+      password
+    })
+
   });
+
   const data = await response.json();
-  if (!response.ok) throw new Error(data.message || 'Error en la solicitud');
-  return data;
-}
-function dateTime(value){ return value ? new Date(value).toLocaleString('es-SV') : '—'; }
-function escapeHTML(value){return String(value ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-function formatDate(date){ if(!date)return '—'; const d=new Date(date+'T00:00:00'); return d.toLocaleDateString('es-SV'); }
-function badge(status){let cls=status==='Completada'?'done':status==='En progreso'?'progress':'pending';return `<span class="pill ${cls}">${escapeHTML(status)}</span>`;}
-function priorityBadge(p){let cls=p==='Urgente'?'urgent':p==='Alta'?'high':'low';return `<span class="pill ${cls}">${escapeHTML(p)}</span>`;}
 
-async function loadData(){
-  try {
-    [tasks, historyItems] = await Promise.all([api('/tasks'), api('/history')]);
-    render();
-    const alertBox = document.getElementById('connectionError');
-    if(alertBox) alertBox.remove();
-  } catch(error) {
-    let alertBox = document.getElementById('connectionError');
-    if(!alertBox){ alertBox=document.createElement('div'); alertBox.id='connectionError'; alertBox.className='notice'; document.querySelector('main').prepend(alertBox); }
-    alertBox.textContent='No se pudo conectar con el servidor. Inicia el backend y verifica la conexión a MongoDB Atlas. Detalle: '+error.message;
+  if (!response.ok) {
+
+    throw new Error(
+      data.message || 'No se pudo iniciar sesión'
+    );
+
   }
-}
-function showPage(page){
-  ['dashboard','tasks','history'].forEach(p=>$(p).classList.toggle('hidden',p!==page));
-  document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===page));
-  $('pageTitle').textContent=page==='dashboard'?'Resumen general':page==='tasks'?'Actividades':'Historial de actividades';
-  render();
-}
-document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)));
 
-function tableHTML(items,showActions=true){
- if(!items.length)return '<div class="empty">No hay actividades para mostrar.</div>';
- return `<div class="table-wrap"><table><thead><tr><th>Actividad</th><th>Responsable</th><th>Prioridad</th><th>Fecha límite</th><th>Estado</th>${showActions?'<th>Acciones</th>':''}</tr></thead><tbody>${items.map(t=>`<tr><td><b>${escapeHTML(t.title)}</b><small>${escapeHTML(t.description||'Sin descripción')}</small></td><td>${escapeHTML(t.owner||'Sin asignar')}</td><td>${priorityBadge(t.priority)}</td><td>${formatDate(t.dueDate)}</td><td>${badge(t.status)}</td>${showActions?`<td><div class="actions">${t.status!=='Completada'?`<button class="finish" onclick="completeTask('${t._id}')">✓ Hecha</button>`:''}<button onclick="editTask('${t._id}')">Editar</button><button class="delete" onclick="deleteTask('${t._id}')">Borrar</button></div></td>`:''}</tr>`).join('')}</tbody></table></div>`;
+  token = data.token;
+  currentUser = data.name;
+
+  sessionStorage.setItem('accessToken', token);
+
+  sessionStorage.setItem('currentUser', currentUser);
+
+  showApp();
+
+  await loadData();
+
 }
-function render(){
- $('total').textContent=tasks.length;
- $('pendingCount').textContent=tasks.filter(t=>t.status==='Pendiente').length;
- $('progressCount').textContent=tasks.filter(t=>t.status==='En progreso').length;
- $('doneCount').textContent=tasks.filter(t=>t.status==='Completada').length;
- const recent=[...tasks].sort((a,b)=>new Date(b.updatedAt)-new Date(a.updatedAt)).slice(0,5);
- $('recentTable').innerHTML=tableHTML(recent);
- const term=($('search')?.value||'').toLowerCase(),filter=$('filter')?.value||'';
- const visible=tasks.filter(t=>(!filter||t.status===filter)&&(`${t.title} ${t.description} ${t.owner}`.toLowerCase().includes(term)));
- if($('taskTable'))$('taskTable').innerHTML=tableHTML(visible);
- if($('historyTable'))$('historyTable').innerHTML=historyItems.length?`<div class="table-wrap"><table><thead><tr><th>Actividad</th><th>Acción</th><th>Estado anterior</th><th>Estado nuevo</th><th>Responsable</th><th>Fecha y hora</th></tr></thead><tbody>${historyItems.map(h=>`<tr><td><b>${escapeHTML(h.taskTitle)}</b><small>${escapeHTML(h.note||'')}</small></td><td>${escapeHTML(h.action)}</td><td>${escapeHTML(h.oldStatus||'—')}</td><td>${badge(h.newStatus||'Pendiente')}</td><td>${escapeHTML(h.owner||'Sin asignar')}</td><td>${dateTime(h.changedAt)}</td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">Todavía no hay movimientos registrados.</div>';
+
+
+// ==========================================
+// CERRAR SESIÓN
+// ==========================================
+
+function logout() {
+
+  showLogin();
+
 }
-function openForm(task=null){
- $('taskForm').reset();$('taskId').value=task?task._id:'';
- $('formTitle').textContent=task?'Editar actividad':'Nueva actividad';
- if(task){$('title').value=task.title;$('description').value=task.description||'';$('owner').value=task.owner||'';$('dueDate').value=task.dueDate?task.dueDate.substring(0,10):'';$('priority').value=task.priority;$('status').value=task.status;}
- $('modalBg').classList.remove('hidden');$('title').focus();
+
+
+// ==========================================
+// COMUNICACIÓN CON EL BACKEND
+// ==========================================
+
+async function api(path, options = {}) {
+
+  const response = await fetch(API + path, {
+
+    ...options,
+
+    headers: {
+
+      'Content-Type': 'application/json',
+
+      ...(token ? {
+        Authorization: `Bearer ${token}`
+      } : {}),
+
+      ...(options.headers || {})
+
+    }
+
+  });
+
+  const data = await response.json();
+
+  if (response.status === 401) {
+
+    showLogin();
+
+    throw new Error(
+      'Tu sesión expiró. Inicia sesión nuevamente.'
+    );
+
+  }
+
+  if (!response.ok) {
+
+    throw new Error(
+      data.message || 'Error en la solicitud'
+    );
+
+  }
+
+  return data;
+
 }
-function closeForm(){$('modalBg').classList.add('hidden');}
-function editTask(id){const task=tasks.find(t=>t._id===id);if(task)openForm(task);}
-$('taskForm').addEventListener('submit',async e=>{
- e.preventDefault();
- const id=$('taskId').value;
- const payload={title:$('title').value.trim(),description:$('description').value.trim(),owner:$('owner').value.trim(),dueDate:$('dueDate').value||null,priority:$('priority').value,status:$('status').value};
- try {
-   if(id) await api('/tasks/'+id,{method:'PUT',body:JSON.stringify(payload)});
-   else await api('/tasks',{method:'POST',body:JSON.stringify(payload)});
-   closeForm(); await loadData();
- } catch(error){alert('No se pudo guardar: '+error.message);}
+
+
+// ==========================================
+// FUNCIONES AUXILIARES
+// ==========================================
+
+function dateTime(value) {
+
+  return value
+    ? new Date(value).toLocaleString('es-SV')
+    : '—';
+
+}
+
+function escapeHTML(value) {
+
+  return String(value ?? '').replace(/[&<>"']/g, c => ({
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;',
+    "'":'&#39;'
+  }[c]));
+
+}
+
+function formatDate(date) {
+
+  if (!date) return '—';
+
+  const d = new Date(date + 'T00:00:00');
+
+  return d.toLocaleDateString('es-SV');
+
+}
+
+function badge(status) {
+
+  let cls =
+    status === 'Completada'
+      ? 'done'
+      : status === 'En progreso'
+        ? 'progress'
+        : 'pending';
+
+  return `<span class="pill ${cls}">
+    ${escapeHTML(status)}
+  </span>`;
+
+}
+
+function priorityBadge(p) {
+
+  let cls =
+    p === 'Urgente'
+      ? 'urgent'
+      : p === 'Alta'
+        ? 'high'
+        : 'low';
+
+  return `<span class="pill ${cls}">
+    ${escapeHTML(p)}
+  </span>`;
+
+}
+
+
+// ==========================================
+// CARGAR DATOS DESDE MONGODB
+// ==========================================
+
+async function loadData() {
+
+  try {
+
+    [tasks, historyItems] = await Promise.all([
+
+      api('/tasks'),
+
+      api('/history')
+
+    ]);
+
+    render();
+
+    const alertBox = $('connectionError');
+
+    if (alertBox) {
+      alertBox.remove();
+    }
+
+  } catch(error) {
+
+    let alertBox = $('connectionError');
+
+    if (!alertBox && !$('appLayout').classList.contains('hidden')) {
+
+      alertBox = document.createElement('div');
+
+      alertBox.id = 'connectionError';
+
+      alertBox.className = 'notice';
+
+      document.querySelector('main').prepend(alertBox);
+
+    }
+
+    if (alertBox) {
+
+      alertBox.textContent =
+        'No se pudieron cargar los datos. Verifica el backend y MongoDB Atlas. Detalle: '
+        + error.message;
+
+    }
+
+  }
+
+}
+
+
+// ==========================================
+// NAVEGACIÓN
+// ==========================================
+
+function showPage(page) {
+
+  ['dashboard', 'tasks', 'history'].forEach(p => {
+
+    $(p).classList.toggle('hidden', p !== page);
+
+  });
+
+  document.querySelectorAll('.nav button').forEach(b => {
+
+    b.classList.toggle(
+      'active',
+      b.dataset.page === page
+    );
+
+  });
+
+  $('pageTitle').textContent =
+    page === 'dashboard'
+      ? 'Resumen general'
+      : page === 'tasks'
+        ? 'Actividades'
+        : 'Historial de actividades';
+
+  render();
+
+}
+
+document.querySelectorAll('.nav button').forEach(b => {
+
+  b.addEventListener('click', () => {
+
+    showPage(b.dataset.page);
+
+  });
+
 });
-async function completeTask(id){
- const task=tasks.find(t=>t._id===id);if(!task)return;
- try {await api('/tasks/'+id+'/complete',{method:'PATCH',body:JSON.stringify({note:'Actividad marcada como realizada'})});await loadData();}
- catch(error){alert('No se pudo completar: '+error.message);}
+
+
+// ==========================================
+// TABLA DE ACTIVIDADES
+// ==========================================
+
+function tableHTML(items, showActions = true) {
+
+  if (!items.length) {
+
+    return '<div class="empty">No hay actividades para mostrar.</div>';
+
+  }
+
+  return `
+
+    <div class="table-wrap">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>Actividad</th>
+            <th>Responsable</th>
+            <th>Prioridad</th>
+            <th>Fecha límite</th>
+            <th>Estado</th>
+
+            ${showActions ? '<th>Acciones</th>' : ''}
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          ${items.map(t => `
+
+            <tr>
+
+              <td>
+
+                <b>${escapeHTML(t.title)}</b>
+
+                <small>
+                  ${escapeHTML(t.description || 'Sin descripción')}
+                </small>
+
+              </td>
+
+              <td>
+                ${escapeHTML(t.owner || 'Sin asignar')}
+              </td>
+
+              <td>
+                ${priorityBadge(t.priority)}
+              </td>
+
+              <td>
+                ${formatDate(t.dueDate)}
+              </td>
+
+              <td>
+                ${badge(t.status)}
+              </td>
+
+              ${showActions ? `
+
+                <td>
+
+                  <div class="actions">
+
+                    ${t.status !== 'Completada' ? `
+
+                      <button
+                        class="finish"
+                        onclick="completeTask('${t._id}')"
+                      >
+                        ✓ Hecha
+                      </button>
+
+                    ` : ''}
+
+                    <button onclick="editTask('${t._id}')">
+                      Editar
+                    </button>
+
+                    <button
+                      class="delete"
+                      onclick="deleteTask('${t._id}')"
+                    >
+                      Borrar
+                    </button>
+
+                  </div>
+
+                </td>
+
+              ` : ''}
+
+            </tr>
+
+          `).join('')}
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  `;
+
 }
-async function deleteTask(id){
- if(!confirm('¿Deseas eliminar esta actividad? El registro de historial se conservará.'))return;
- try {await api('/tasks/'+id,{method:'DELETE'});await loadData();}
- catch(error){alert('No se pudo eliminar: '+error.message);}
+
+
+// ==========================================
+// RENDERIZAR TODA LA INFORMACIÓN
+// ==========================================
+
+function render() {
+
+  $('total').textContent = tasks.length;
+
+  $('pendingCount').textContent =
+    tasks.filter(t => t.status === 'Pendiente').length;
+
+  $('progressCount').textContent =
+    tasks.filter(t => t.status === 'En progreso').length;
+
+  $('doneCount').textContent =
+    tasks.filter(t => t.status === 'Completada').length;
+
+
+  // Actividades recientes
+
+  const recent = [...tasks]
+
+    .sort((a, b) =>
+      new Date(b.updatedAt) - new Date(a.updatedAt)
+    )
+
+    .slice(0, 5);
+
+  $('recentTable').innerHTML = tableHTML(recent);
+
+
+  // Búsqueda y filtros
+
+  const term = ($('search')?.value || '').toLowerCase();
+
+  const filter = $('filter')?.value || '';
+
+  const visible = tasks.filter(t =>
+
+    (!filter || t.status === filter) &&
+
+    (`${t.title} ${t.description} ${t.owner}`
+      .toLowerCase()
+      .includes(term))
+
+  );
+
+  if ($('taskTable')) {
+
+    $('taskTable').innerHTML = tableHTML(visible);
+
+  }
+
+
+  // HISTORIAL DE MOVIMIENTOS
+
+  if ($('historyTable')) {
+
+    $('historyTable').innerHTML = historyItems.length
+
+      ? `
+
+        <div class="table-wrap">
+
+          <table>
+
+            <thead>
+
+              <tr>
+
+                <th>Actividad</th>
+                <th>Acción</th>
+                <th>Realizado por</th>
+                <th>Estado anterior</th>
+                <th>Estado nuevo</th>
+                <th>Responsable</th>
+                <th>Fecha y hora</th>
+
+              </tr>
+
+            </thead>
+
+            <tbody>
+
+              ${historyItems.map(h => `
+
+                <tr>
+
+                  <td>
+
+                    <b>${escapeHTML(h.taskTitle)}</b>
+
+                    <small>
+                      ${escapeHTML(h.note || '')}
+                    </small>
+
+                  </td>
+
+                  <td>
+                    ${escapeHTML(h.action)}
+                  </td>
+
+                  <td>
+                    <b>${escapeHTML(h.performedBy || 'No identificado')}</b>
+                  </td>
+
+                  <td>
+                    ${escapeHTML(h.oldStatus || '—')}
+                  </td>
+
+                  <td>
+                    ${h.newStatus ? badge(h.newStatus) : '—'}
+                  </td>
+
+                  <td>
+                    ${escapeHTML(h.owner || 'Sin asignar')}
+                  </td>
+
+                  <td>
+                    ${dateTime(h.changedAt)}
+                  </td>
+
+                </tr>
+
+              `).join('')}
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      `
+
+      : '<div class="empty">Todavía no hay movimientos registrados.</div>';
+
+  }
+
 }
-$('modalBg').addEventListener('click',e=>{if(e.target===$('modalBg'))closeForm();});
-loadData();
+
+
+// ==========================================
+// FORMULARIO DE ACTIVIDADES
+// ==========================================
+
+function openForm(task = null) {
+
+  $('taskForm').reset();
+
+  $('taskId').value = task ? task._id : '';
+
+  $('formTitle').textContent =
+    task ? 'Editar actividad' : 'Nueva actividad';
+
+  if (task) {
+
+    $('title').value = task.title;
+
+    $('description').value = task.description || '';
+
+    $('owner').value = task.owner || '';
+
+    $('dueDate').value =
+      task.dueDate
+        ? task.dueDate.substring(0, 10)
+        : '';
+
+    $('priority').value = task.priority;
+
+    $('status').value = task.status;
+
+  }
+
+  $('modalBg').classList.remove('hidden');
+
+  $('title').focus();
+
+}
+
+function closeForm() {
+
+  $('modalBg').classList.add('hidden');
+
+}
+
+function editTask(id) {
+
+  const task = tasks.find(t => t._id === id);
+
+  if (task) {
+    openForm(task);
+  }
+
+}
+
+
+// ==========================================
+// GUARDAR O ACTUALIZAR ACTIVIDAD
+// ==========================================
+
+$('taskForm').addEventListener('submit', async e => {
+
+  e.preventDefault();
+
+  const id = $('taskId').value;
+
+  const payload = {
+
+    title: $('title').value.trim(),
+
+    description: $('description').value.trim(),
+
+    owner: $('owner').value.trim(),
+
+    dueDate: $('dueDate').value || null,
+
+    priority: $('priority').value,
+
+    status: $('status').value
+
+  };
+
+  try {
+
+    if (id) {
+
+      await api('/tasks/' + id, {
+
+        method: 'PUT',
+
+        body: JSON.stringify(payload)
+
+      });
+
+    } else {
+
+      await api('/tasks', {
+
+        method: 'POST',
+
+        body: JSON.stringify(payload)
+
+      });
+
+    }
+
+    closeForm();
+
+    await loadData();
+
+  } catch(error) {
+
+    alert('No se pudo guardar: ' + error.message);
+
+  }
+
+});
+
+
+// ==========================================
+// COMPLETAR ACTIVIDAD
+// ==========================================
+
+async function completeTask(id) {
+
+  const task = tasks.find(t => t._id === id);
+
+  if (!task) return;
+
+  try {
+
+    await api('/tasks/' + id + '/complete', {
+
+      method: 'PATCH',
+
+      body: JSON.stringify({
+
+        note: 'Actividad marcada como realizada'
+
+      })
+
+    });
+
+    await loadData();
+
+  } catch(error) {
+
+    alert('No se pudo completar: ' + error.message);
+
+  }
+
+}
+
+
+// ==========================================
+// ELIMINAR ACTIVIDAD
+// ==========================================
+
+async function deleteTask(id) {
+
+  if (!confirm(
+    '¿Deseas eliminar esta actividad? El registro de historial se conservará.'
+  )) return;
+
+  try {
+
+    await api('/tasks/' + id, {
+
+      method: 'DELETE'
+
+    });
+
+    await loadData();
+
+  } catch(error) {
+
+    alert('No se pudo eliminar: ' + error.message);
+
+  }
+
+}
+
+
+// ==========================================
+// CERRAR MODAL AL HACER CLIC FUERA
+// ==========================================
+
+$('modalBg').addEventListener('click', e => {
+
+  if (e.target === $('modalBg')) {
+
+    closeForm();
+
+  }
+
+});
+
+
+// ==========================================
+// FORMULARIO DE INICIO DE SESIÓN
+// ==========================================
+
+$('loginForm').addEventListener('submit', async e => {
+
+  e.preventDefault();
+
+  const name = $('loginName').value.trim();
+
+  const password = $('globalPassword').value;
+
+  $('loginError').textContent = '';
+
+  try {
+
+    await login(name, password);
+
+  } catch(error) {
+
+    $('loginError').textContent = error.message;
+
+  }
+
+});
+
+
+// ==========================================
+// COMPROBAR SESIÓN AL ABRIR LA PÁGINA
+// ==========================================
+
+async function checkSession() {
+
+  if (!token || !currentUser) {
+
+    showLogin();
+
+    return;
+
+  }
+
+  showApp();
+
+  await loadData();
+
+}
+
+checkSession();
+
 </script>
+
 </body>
 </html>
