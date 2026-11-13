@@ -32,7 +32,10 @@ app.use(cors({
 
 app.use(express.json());
 
-// Comprobar servidor y conexión con MongoDB
+// ==========================================
+// COMPROBAR SERVIDOR Y MONGODB
+// ==========================================
+
 app.get('/api/health', (_req, res) => {
   res.json({
     ok: true,
@@ -55,13 +58,16 @@ app.post('/api/login', (req, res) => {
     });
   }
 
-  if (!name || !name.trim()) {
+  if (typeof name !== 'string' || !name.trim()) {
     return res.status(400).json({
       message: 'Debes ingresar tu nombre'
     });
   }
 
-  if (!password || password !== process.env.SHARED_PASSWORD) {
+  if (
+    typeof password !== 'string' ||
+    password !== process.env.SHARED_PASSWORD
+  ) {
     return res.status(401).json({
       message: 'Contraseña incorrecta'
     });
@@ -98,10 +104,11 @@ function authenticate(req, res, next) {
     });
   }
 
-  const token = authHeader.split(' ')[1];
-
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(
+      authHeader.split(' ')[1],
+      process.env.JWT_SECRET
+    );
 
     if (decoded.access !== true || !decoded.name) {
       return res.status(403).json({
@@ -114,15 +121,16 @@ function authenticate(req, res, next) {
     };
 
     next();
-  } catch (error) {
+
+  } catch (_error) {
     return res.status(401).json({
       message: 'La sesión expiró. Inicia sesión nuevamente'
     });
   }
 }
 
-// Desde aquí todas las rutas /api requieren autenticación.
-// /api/health y /api/login quedan públicas porque están antes.
+// Health y login quedan públicos.
+// Todas las demás rutas /api requieren autenticación.
 app.use('/api', authenticate);
 
 // ==========================================
@@ -133,8 +141,33 @@ function validTask(data) {
   const priorities = ['Baja', 'Media', 'Alta', 'Urgente'];
   const statuses = ['Pendiente', 'En progreso', 'Completada'];
 
-  if (!data.title || !data.title.trim()) {
+  if (
+    !data.title ||
+    typeof data.title !== 'string' ||
+    !data.title.trim()
+  ) {
     return 'El título es obligatorio';
+  }
+
+  if (
+    !data.startDate ||
+    Number.isNaN(Date.parse(data.startDate))
+  ) {
+    return 'La fecha de inicio es obligatoria y debe ser válida';
+  }
+
+  if (
+    !data.dueDate ||
+    Number.isNaN(Date.parse(data.dueDate))
+  ) {
+    return 'La fecha final es obligatoria y debe ser válida';
+  }
+
+  const start = new Date(data.startDate);
+  const end = new Date(data.dueDate);
+
+  if (start > end) {
+    return 'La fecha final no puede ser anterior a la fecha de inicio';
   }
 
   if (data.priority && !priorities.includes(data.priority)) {
@@ -159,8 +192,10 @@ app.get('/api/tasks', async (_req, res) => {
       .lean();
 
     res.json(tasks);
+
   } catch (err) {
     console.error(err);
+
     res.status(500).json({
       message: 'No se pudieron obtener las actividades'
     });
@@ -175,19 +210,24 @@ app.post('/api/tasks', async (req, res) => {
   const validation = validTask(req.body);
 
   if (validation) {
-    return res.status(400).json({ message: validation });
+    return res.status(400).json({
+      message: validation
+    });
   }
 
   try {
     const task = await Task.create({
-      title: req.body.title,
+      title: req.body.title.trim(),
       description: req.body.description || '',
       owner: req.body.owner || '',
+      startDate: req.body.startDate,
+      dueDate: req.body.dueDate,
       priority: req.body.priority || 'Media',
       status: req.body.status || 'Pendiente',
-      dueDate: req.body.dueDate || null,
       completedAt:
-        req.body.status === 'Completada' ? new Date() : null
+        req.body.status === 'Completada'
+          ? new Date()
+          : null
     });
 
     await History.create({
@@ -202,8 +242,10 @@ app.post('/api/tasks', async (req, res) => {
     });
 
     res.status(201).json(task);
+
   } catch (err) {
     console.error(err);
+
     res.status(500).json({
       message: 'No se pudo crear la actividad'
     });
@@ -218,7 +260,9 @@ app.put('/api/tasks/:id', async (req, res) => {
   const validation = validTask(req.body);
 
   if (validation) {
-    return res.status(400).json({ message: validation });
+    return res.status(400).json({
+      message: validation
+    });
   }
 
   try {
@@ -232,12 +276,13 @@ app.put('/api/tasks/:id', async (req, res) => {
 
     const oldStatus = task.status;
 
-    task.title = req.body.title;
+    task.title = req.body.title.trim();
     task.description = req.body.description || '';
     task.owner = req.body.owner || '';
+    task.startDate = req.body.startDate;
+    task.dueDate = req.body.dueDate;
     task.priority = req.body.priority || 'Media';
     task.status = req.body.status || 'Pendiente';
-    task.dueDate = req.body.dueDate || null;
 
     task.completedAt =
       task.status === 'Completada'
@@ -261,8 +306,10 @@ app.put('/api/tasks/:id', async (req, res) => {
     });
 
     res.json(task);
+
   } catch (err) {
     console.error(err);
+
     res.status(500).json({
       message: 'No se pudo actualizar la actividad'
     });
@@ -298,15 +345,17 @@ app.patch('/api/tasks/:id/complete', async (req, res) => {
       action: 'Actividad completada',
       oldStatus,
       newStatus: 'Completada',
-      note: req.body.note || 'Actividad marcada como realizada'
+      note: req.body?.note || 'Actividad marcada como realizada'
     });
 
     res.json({
       message: 'Actividad completada',
       task
     });
+
   } catch (err) {
     console.error(err);
+
     res.status(500).json({
       message: 'No se pudo completar la actividad'
     });
@@ -341,8 +390,10 @@ app.delete('/api/tasks/:id', async (req, res) => {
     res.json({
       message: 'Actividad eliminada y registrada en el historial'
     });
+
   } catch (err) {
     console.error(err);
+
     res.status(500).json({
       message: 'No se pudo eliminar la actividad'
     });
@@ -360,8 +411,10 @@ app.get('/api/history', async (_req, res) => {
       .lean();
 
     res.json(history);
+
   } catch (err) {
     console.error(err);
+
     res.status(500).json({
       message: 'No se pudo consultar el historial'
     });
@@ -373,6 +426,16 @@ app.get('/api/history', async (_req, res) => {
 // ==========================================
 
 const PORT = process.env.PORT || 4000;
+
+if (!process.env.MONGODB_URI) {
+  console.error('Falta configurar MONGODB_URI');
+  process.exit(1);
+}
+
+if (!process.env.JWT_SECRET) {
+  console.error('Falta configurar JWT_SECRET');
+  process.exit(1);
+}
 
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
