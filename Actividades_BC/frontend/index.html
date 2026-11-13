@@ -374,6 +374,30 @@ td small {
   gap:10px;
 }
 
+/* FECHAS DE INICIO Y FINAL */
+
+.dates-container {
+  margin-top:10px;
+  margin-bottom:10px;
+}
+
+.dates-container label {
+  margin-top:8px;
+}
+
+.dates-container input {
+  min-height:40px;
+  cursor:pointer;
+}
+
+.modal input[type="date"] {
+  color-scheme:light;
+}
+
+body.dark-mode .modal input[type="date"] {
+  color-scheme:dark;
+}
+
 .modal-foot {
   display:flex;
   justify-content:flex-end;
@@ -436,6 +460,17 @@ td small {
   margin-top:12px;
 }
 
+/* BOTÓN DE TEMA DEL LOGIN */
+
+#themeButtonLogin {
+  margin-bottom:18px;
+  width:100%;
+}
+
+body.dark-mode .login-screen {
+  background:#0b1220;
+}
+
 /* AJUSTES DEL MODO OSCURO */
 
 body.dark-mode .user {
@@ -495,8 +530,11 @@ body.dark-mode .low {
 <!-- INICIO DE SESIÓN -->
 
 <div id="loginScreen" class="login-screen">
+
   <form class="login-card" id="loginForm">
+
     <h2>Gestión Empresarial</h2>
+
     <p>Ingresa tus datos para acceder al sistema.</p>
 
     <input
@@ -516,9 +554,23 @@ body.dark-mode .low {
       autocomplete="current-password"
     >
 
-    <button type="submit" class="btn">Iniciar sesión</button>
+    <button type="submit" class="btn">
+      Iniciar sesión
+    </button>
+
+    <button
+      type="button"
+      class="btn gray"
+      id="themeButtonLogin"
+      onclick="toggleTheme()"
+    >
+      🌙 Oscuro
+    </button>
+
     <div id="loginError" class="login-error"></div>
+
   </form>
+
 </div>
 
 <!-- APLICACIÓN -->
@@ -535,9 +587,19 @@ body.dark-mode .low {
     <div class="nav-title">MENÚ PRINCIPAL</div>
 
     <nav class="nav">
-      <button class="active" data-page="dashboard">▦ Resumen</button>
-      <button data-page="tasks">☷ Actividades</button>
-      <button data-page="history">◷ Historial</button>
+
+      <button class="active" data-page="dashboard">
+        ▦ Resumen
+      </button>
+
+      <button data-page="tasks">
+        ☷ Actividades
+      </button>
+
+      <button data-page="history">
+        ◷ Historial
+      </button>
+
     </nav>
 
     <div class="side-foot">
@@ -556,6 +618,7 @@ body.dark-mode .low {
       </div>
 
       <div class="user">
+
         <span id="currentUser">Usuario</span>
 
         <button
@@ -570,6 +633,7 @@ body.dark-mode .low {
         <button type="button" onclick="logout()">
           Cerrar sesión
         </button>
+
       </div>
 
     </header>
@@ -579,6 +643,7 @@ body.dark-mode .low {
     <section id="dashboard">
 
       <div class="welcome">
+
         <div>
           <h2>¡Bienvenido!</h2>
           <p>Consulta el estado de las actividades de tu empresa.</p>
@@ -587,6 +652,7 @@ body.dark-mode .low {
         <button class="btn" onclick="openForm()">
           ＋ Nueva actividad
         </button>
+
       </div>
 
       <div class="stats">
@@ -616,6 +682,7 @@ body.dark-mode .low {
       <div class="panel">
 
         <div class="panel-head">
+
           <div>
             <h3>Actividades recientes</h3>
             <p class="sub">Últimas tareas registradas</p>
@@ -624,6 +691,7 @@ body.dark-mode .low {
           <button class="btn gray" onclick="showPage('tasks')">
             Ver todas
           </button>
+
         </div>
 
         <div id="recentTable"></div>
@@ -639,6 +707,7 @@ body.dark-mode .low {
       <div class="panel">
 
         <div class="panel-head">
+
           <div>
             <h3>Listado de actividades</h3>
             <p class="sub">Agrega, organiza y actualiza las tareas.</p>
@@ -647,9 +716,11 @@ body.dark-mode .low {
           <button class="btn" onclick="openForm()">
             ＋ Agregar actividad
           </button>
+
         </div>
 
         <div class="tools">
+
           <input
             id="search"
             placeholder="Buscar actividad..."
@@ -662,6 +733,7 @@ body.dark-mode .low {
             <option>En progreso</option>
             <option>Completada</option>
           </select>
+
         </div>
 
         <div id="taskTable"></div>
@@ -677,12 +749,14 @@ body.dark-mode .low {
       <div class="panel">
 
         <div class="panel-head">
+
           <div>
             <h3>Historial de actividades</h3>
             <p class="sub">
               Registro de las acciones realizadas por cada usuario.
             </p>
           </div>
+
         </div>
 
         <div id="historyTable"></div>
@@ -692,6 +766,7 @@ body.dark-mode .low {
     </section>
 
   </main>
+
 </div>
 
 <!-- MODAL DE ACTIVIDADES -->
@@ -701,12 +776,14 @@ body.dark-mode .low {
   <form class="modal" id="taskForm">
 
     <h2 id="formTitle">Nueva actividad</h2>
+
     <p class="sub">Completa los datos de la tarea.</p>
 
     <input type="hidden" id="taskId">
 
     <label>
       Nombre de la actividad *
+
       <input
         id="title"
         required
@@ -717,6 +794,7 @@ body.dark-mode .low {
 
     <label>
       Descripción
+
       <textarea
         id="description"
         rows="3"
@@ -726,23 +804,48 @@ body.dark-mode .low {
 
     <label>
       Responsable
-      <input id="owner" placeholder="Nombre del empleado">
+
+      <input
+        id="owner"
+        placeholder="Nombre del empleado"
+      >
     </label>
+
+    <!-- FECHAS -->
+
+    <div class="two dates-container">
+
+      <label>
+        📅 Fecha de inicio *
+
+        <input
+          id="startDate"
+          name="startDate"
+          type="date"
+          required
+        >
+      </label>
+
+      <label>
+        📅 Fecha final *
+
+        <input
+          id="dueDate"
+          name="dueDate"
+          type="date"
+          required
+        >
+      </label>
+
+    </div>
+
+    <!-- PRIORIDAD Y ESTADO -->
 
     <div class="two">
 
       <label>
-        Fecha de inicio *
-        <input id="startDate" type="date" required>
-      </label>
-
-      <label>
-        Fecha final *
-        <input id="dueDate" type="date" required>
-      </label>
-
-      <label>
         Prioridad
+
         <select id="priority">
           <option>Baja</option>
           <option selected>Media</option>
@@ -753,6 +856,7 @@ body.dark-mode .low {
 
       <label>
         Estado
+
         <select id="status">
           <option>Pendiente</option>
           <option>En progreso</option>
@@ -763,6 +867,7 @@ body.dark-mode .low {
     </div>
 
     <div class="modal-foot">
+
       <button
         type="button"
         class="btn gray"
@@ -774,9 +879,11 @@ body.dark-mode .low {
       <button class="btn" type="submit">
         Guardar actividad
       </button>
+
     </div>
 
   </form>
+
 </div>
 
 <script>
@@ -796,24 +903,36 @@ let token = sessionStorage.getItem('accessToken');
 let currentUser = sessionStorage.getItem('currentUser');
 
 // ==========================================
-// MODO OSCURO
+// MODO OSCURO Y CLARO
 // ==========================================
 
 function applyTheme() {
+
   const dark = localStorage.getItem('theme') === 'dark';
 
   document.body.classList.toggle('dark-mode', dark);
 
-  const button = $('themeButton');
+  const buttons = [
+    $('themeButton'),
+    $('themeButtonLogin')
+  ];
 
-  if (button) {
-    button.textContent = dark
-      ? '☀️ Claro'
-      : '🌙 Oscuro';
-  }
+  buttons.forEach(button => {
+
+    if (button) {
+
+      button.textContent = dark
+        ? '☀️ Claro'
+        : '🌙 Oscuro';
+
+    }
+
+  });
+
 }
 
 function toggleTheme() {
+
   const isDark = document.body.classList.toggle('dark-mode');
 
   localStorage.setItem(
@@ -821,9 +940,8 @@ function toggleTheme() {
     isDark ? 'dark' : 'light'
   );
 
-  $('themeButton').textContent = isDark
-    ? '☀️ Claro'
-    : '🌙 Oscuro';
+  applyTheme();
+
 }
 
 applyTheme();
@@ -833,15 +951,19 @@ applyTheme();
 // ==========================================
 
 function showApp() {
+
   $('loginScreen').classList.add('hidden');
+
   $('appLayout').classList.remove('hidden');
 
   $('currentUser').textContent = currentUser || 'Usuario';
 
   applyTheme();
+
 }
 
 function showLogin() {
+
   token = null;
   currentUser = null;
 
@@ -852,16 +974,22 @@ function showLogin() {
   historyItems = [];
 
   $('appLayout').classList.add('hidden');
+
   $('loginScreen').classList.remove('hidden');
 
   $('loginName').value = '';
   $('globalPassword').value = '';
+
   $('loginError').textContent = '';
+
+  applyTheme();
+
 }
 
 async function login(name, password) {
 
   const response = await fetch(API + '/login', {
+
     method: 'POST',
 
     headers: {
@@ -872,29 +1000,36 @@ async function login(name, password) {
       name,
       password
     })
+
   });
 
   const data = await response.json();
 
   if (!response.ok) {
+
     throw new Error(
       data.message || 'No se pudo iniciar sesión'
     );
+
   }
 
   token = data.token;
   currentUser = data.name;
 
   sessionStorage.setItem('accessToken', token);
+
   sessionStorage.setItem('currentUser', currentUser);
 
   showApp();
 
   await loadData();
+
 }
 
 function logout() {
+
   showLogin();
+
 }
 
 // ==========================================
@@ -904,9 +1039,11 @@ function logout() {
 async function api(path, options = {}) {
 
   const response = await fetch(API + path, {
+
     ...options,
 
     headers: {
+
       'Content-Type': 'application/json',
 
       ...(token
@@ -914,26 +1051,33 @@ async function api(path, options = {}) {
         : {}),
 
       ...(options.headers || {})
+
     }
+
   });
 
   const data = await response.json();
 
   if (response.status === 401) {
+
     showLogin();
 
     throw new Error(
       'Tu sesión expiró. Inicia sesión nuevamente.'
     );
+
   }
 
   if (!response.ok) {
+
     throw new Error(
       data.message || 'Error en la solicitud'
     );
+
   }
 
   return data;
+
 }
 
 // ==========================================
@@ -941,22 +1085,29 @@ async function api(path, options = {}) {
 // ==========================================
 
 function dateTime(value) {
+
   return value
     ? new Date(value).toLocaleString('es-SV')
     : '—';
+
 }
 
 function escapeHTML(value) {
+
   return String(value ?? '').replace(/[&<>"']/g, c => ({
+
     '&':'&amp;',
     '<':'&lt;',
     '>':'&gt;',
     '"':'&quot;',
     "'":'&#39;'
+
   }[c]));
+
 }
 
 function formatDate(value) {
+
   if (!value) return '—';
 
   const date = new Date(value);
@@ -968,17 +1119,25 @@ function formatDate(value) {
   return date.toLocaleDateString('es-SV', {
     timeZone: 'UTC'
   });
+
 }
 
 function dateInputValue(value) {
+
   if (!value) return '';
 
-  return new Date(value)
-    .toISOString()
-    .slice(0, 10);
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return '';
+  }
+
+  return date.toISOString().slice(0, 10);
+
 }
 
 function badge(status) {
+
   const cls = status === 'Completada'
     ? 'done'
     : status === 'En progreso'
@@ -988,9 +1147,11 @@ function badge(status) {
   return `<span class="pill ${cls}">
     ${escapeHTML(status)}
   </span>`;
+
 }
 
 function priorityBadge(priority) {
+
   const cls = priority === 'Urgente'
     ? 'urgent'
     : priority === 'Alta'
@@ -1000,6 +1161,7 @@ function priorityBadge(priority) {
   return `<span class="pill ${cls}">
     ${escapeHTML(priority)}
   </span>`;
+
 }
 
 // ==========================================
@@ -1011,8 +1173,11 @@ async function loadData() {
   try {
 
     [tasks, historyItems] = await Promise.all([
+
       api('/tasks'),
+
       api('/history')
+
     ]);
 
     render();
@@ -1038,15 +1203,20 @@ async function loadData() {
       alertBox.className = 'notice';
 
       document.querySelector('main').prepend(alertBox);
+
     }
 
     if (alertBox) {
+
       alertBox.textContent =
         'No se pudieron cargar los datos. ' +
         'Verifica el backend y MongoDB Atlas. Detalle: ' +
         error.message;
+
     }
+
   }
+
 }
 
 // ==========================================
@@ -1081,12 +1251,15 @@ function showPage(page) {
         : 'Historial de actividades';
 
   render();
+
 }
 
 document.querySelectorAll('.nav button').forEach(button => {
 
   button.addEventListener('click', () => {
+
     showPage(button.dataset.page);
+
   });
 
 });
@@ -1098,14 +1271,19 @@ document.querySelectorAll('.nav button').forEach(button => {
 function tableHTML(items, showActions = true) {
 
   if (!items.length) {
+
     return '<div class="empty">No hay actividades para mostrar.</div>';
+
   }
 
   return `
+
     <div class="table-wrap">
+
       <table>
 
         <thead>
+
           <tr>
             <th>Actividad</th>
             <th>Responsable</th>
@@ -1115,6 +1293,7 @@ function tableHTML(items, showActions = true) {
             <th>Estado</th>
             ${showActions ? '<th>Acciones</th>' : ''}
           </tr>
+
         </thead>
 
         <tbody>
@@ -1124,10 +1303,13 @@ function tableHTML(items, showActions = true) {
             <tr>
 
               <td>
+
                 <b>${escapeHTML(task.title)}</b>
+
                 <small>
                   ${escapeHTML(task.description || 'Sin descripción')}
                 </small>
+
               </td>
 
               <td>
@@ -1157,12 +1339,14 @@ function tableHTML(items, showActions = true) {
                   <div class="actions">
 
                     ${task.status !== 'Completada' ? `
+
                       <button
                         class="finish"
                         onclick="completeTask('${task._id}')"
                       >
                         ✓ Hecha
                       </button>
+
                     ` : ''}
 
                     <button onclick="editTask('${task._id}')">
@@ -1189,8 +1373,11 @@ function tableHTML(items, showActions = true) {
         </tbody>
 
       </table>
+
     </div>
+
   `;
+
 }
 
 // ==========================================
@@ -1211,14 +1398,17 @@ function render() {
     tasks.filter(t => t.status === 'Completada').length;
 
   const recent = [...tasks]
+
     .sort((a, b) =>
       new Date(b.updatedAt) - new Date(a.updatedAt)
     )
+
     .slice(0, 5);
 
   $('recentTable').innerHTML = tableHTML(recent, false);
 
   const term = ($('search')?.value || '').toLowerCase();
+
   const filter = $('filter')?.value || '';
 
   const visible = tasks.filter(task =>
@@ -1234,7 +1424,9 @@ function render() {
   );
 
   if ($('taskTable')) {
+
     $('taskTable').innerHTML = tableHTML(visible);
+
   }
 
   // HISTORIAL
@@ -1244,9 +1436,11 @@ function render() {
     $('historyTable').innerHTML = historyItems.length ? `
 
       <div class="table-wrap">
+
         <table>
 
           <thead>
+
             <tr>
               <th>Actividad</th>
               <th>Acción</th>
@@ -1256,6 +1450,7 @@ function render() {
               <th>Responsable</th>
               <th>Fecha y hora</th>
             </tr>
+
           </thead>
 
           <tbody>
@@ -1265,8 +1460,11 @@ function render() {
               <tr>
 
                 <td>
+
                   <b>${escapeHTML(item.taskTitle)}</b>
+
                   <small>${escapeHTML(item.note || '')}</small>
+
                 </td>
 
                 <td>${escapeHTML(item.action)}</td>
@@ -1296,15 +1494,17 @@ function render() {
           </tbody>
 
         </table>
+
       </div>
 
     ` : '<div class="empty">Todavía no hay movimientos registrados.</div>';
 
   }
+
 }
 
 // ==========================================
-// FORMULARIO
+// FORMULARIO DE ACTIVIDADES
 // ==========================================
 
 function openForm(task = null) {
@@ -1346,10 +1546,13 @@ function openForm(task = null) {
   $('modalBg').classList.remove('hidden');
 
   $('title').focus();
+
 }
 
 function closeForm() {
+
   $('modalBg').classList.add('hidden');
+
 }
 
 function editTask(id) {
@@ -1357,13 +1560,15 @@ function editTask(id) {
   const task = tasks.find(item => item._id === id);
 
   if (task) {
+
     openForm(task);
+
   }
 
 }
 
 // ==========================================
-// GUARDAR O ACTUALIZAR
+// GUARDAR O ACTUALIZAR ACTIVIDAD
 // ==========================================
 
 $('taskForm').addEventListener('submit', async event => {
@@ -1373,15 +1578,25 @@ $('taskForm').addEventListener('submit', async event => {
   const id = $('taskId').value;
 
   const startDate = $('startDate').value;
+
   const dueDate = $('dueDate').value;
 
-  if (startDate && dueDate && startDate > dueDate) {
+  if (!startDate || !dueDate) {
+
+    alert('Debes ingresar la fecha de inicio y la fecha final.');
+
+    return;
+
+  }
+
+  if (startDate > dueDate) {
 
     alert(
       'La fecha final no puede ser anterior a la fecha de inicio.'
     );
 
     return;
+
   }
 
   const payload = {
@@ -1455,7 +1670,9 @@ async function completeTask(id) {
       method: 'PATCH',
 
       body: JSON.stringify({
+
         note: 'Actividad marcada como realizada'
+
       })
 
     });
@@ -1479,13 +1696,17 @@ async function deleteTask(id) {
   if (!confirm(
     '¿Deseas eliminar esta actividad? El registro de historial se conservará.'
   )) {
+
     return;
+
   }
 
   try {
 
     await api('/tasks/' + id, {
+
       method: 'DELETE'
+
     });
 
     await loadData();
@@ -1505,7 +1726,9 @@ async function deleteTask(id) {
 $('modalBg').addEventListener('click', event => {
 
   if (event.target === $('modalBg')) {
+
     closeForm();
+
   }
 
 });
